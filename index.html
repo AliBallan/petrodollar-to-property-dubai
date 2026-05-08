@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Petrodollar to Property — Oil Shocks &amp; the Dubai Market</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3/dist/chartjs-plugin-annotation.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #080812;
+      --surface:  #0e0e1e;
+      --card:     rgba(255,255,255,0.028);
+      --border:   rgba(255,255,255,0.072);
+      --text:     #dde1ec;
+      --muted:    #57606e;
+      --blue:     #4a8fd4;
+      --rose:     #e05470;
+      --emerald:  #30b87e;
+      --amber:    #e8a840;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 2px; }
+
+    /* ── Nav ───────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      padding: 0.9rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(8,8,18,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-brand {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ──────────────────────────────────────────────── */
+    .hero {
+      min-height: 100dvh;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: 5rem;
+      padding: 7rem 3rem 3rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      padding: 0.32rem 0.8rem;
+      border: 1px solid rgba(74,143,212,0.28);
+      border-radius: 2rem;
+      margin-bottom: 2rem;
+      background: rgba(74,143,212,0.07);
+      width: fit-content;
+    }
+
+    .hero-tag-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--blue);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 4.5vw, 5.2rem);
+      font-weight: 800;
+      line-height: 0.98;
+      letter-spacing: -0.042em;
+      margin-bottom: 1.6rem;
+    }
+
+    .h1-dim { color: var(--muted); display: block; }
+    .h1-bright { display: block; }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 44ch;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    .meta-item {
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .meta-sep {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #2a2a3a;
+    }
+
+    /* ── Hero Stats Grid ─────────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      padding: 1.4rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      transition: border-color 0.25s;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(255,255,255,0.13);
+    }
+
+    .stat-card.wide { grid-column: span 2; }
+
+    .stat-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.1rem;
+      font-weight: 500;
+      line-height: 1.05;
+    }
+
+    .c-blue    { color: var(--blue); }
+    .c-rose    { color: var(--rose); }
+    .c-emerald { color: var(--emerald); }
+    .c-amber   { color: var(--amber); }
+    .c-muted   { color: var(--muted); }
+
+    .stat-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ── Generic Section ────────────────────────────────── */
+    .section {
+      padding: 5.5rem 3rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.65rem;
+    }
+
+    .section-heading {
+      font-size: clamp(1.9rem, 2.8vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.9rem;
+    }
+
+    .section-desc {
+      font-size: 0.97rem;
+      color: var(--muted);
+      max-width: 60ch;
+      line-height: 1.75;
+      margin-bottom: 2.8rem;
+    }
+
+    hr.rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 3rem;
+    }
+
+    /* ── Chart Section ──────────────────────────────────── */
+    .chart-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.4rem;
+      padding: 1.8rem 2rem;
+    }
+
+    .chart-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+      margin-bottom: 1.6rem;
+    }
+
+    .ctrl-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 500;
+      margin-right: 0.4rem;
+    }
+
+    .toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.38rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 0.35rem 0.8rem;
+      border-radius: 2rem;
+      border: 1.5px solid;
+      cursor: pointer;
+      background: transparent;
+      transition: opacity 0.18s, background 0.18s;
+    }
+
+    .toggle-btn:active { transform: scale(0.97); }
+
+    .btn-blue    { color: var(--blue);    border-color: rgba(74,143,212,0.5);  background: rgba(74,143,212,0.08); }
+    .btn-rose    { color: var(--rose);    border-color: rgba(224,84,112,0.5);  background: rgba(224,84,112,0.08); }
+    .btn-emerald { color: var(--emerald); border-color: rgba(48,184,126,0.5);  background: rgba(48,184,126,0.08); }
+    .btn-amber   { color: var(--amber);   border-color: rgba(232,168,64,0.5);  background: rgba(232,168,64,0.08); }
+    .toggle-btn.off { opacity: 0.3; }
+
+    .toggle-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+
+    .chart-wrap { position: relative; height: 380px; }
+
+    /* ── Granger Section ────────────────────────────────── */
+    .granger-layout {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .pval-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2.2rem;
+    }
+
+    .pval-item {}
+
+    .pval-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.55rem;
+    }
+
+    .pval-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .pval-right {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .pval-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .verdict {
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.5rem;
+      border-radius: 1rem;
+    }
+
+    .v-fail {
+      color: #48505a;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+    }
+
+    .v-border {
+      color: var(--amber);
+      background: rgba(232,168,64,0.1);
+      border: 1px solid rgba(232,168,64,0.28);
+    }
+
+    .pval-track {
+      height: 9px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 5px;
+      position: relative;
+      overflow: visible;
+      margin-bottom: 0.35rem;
+    }
+
+    .pval-fill {
+      height: 100%;
+      border-radius: 5px;
+      width: 0;
+      transition: width 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pval-threshold-line {
+      position: absolute;
+      top: -5px; bottom: -5px;
+      width: 2px;
+      background: rgba(224,84,112,0.6);
+      left: 16.67%; /* p=0.05 of max 0.30 */
+      border-radius: 1px;
+      pointer-events: none;
+    }
+
+    .pval-threshold-line::before {
+      content: 'p = 0.05';
+      position: absolute;
+      top: -18px;
+      left: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: rgba(224,84,112,0.65);
+      white-space: nowrap;
+    }
+
+    .pval-axis {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.3rem;
+    }
+
+    .pval-axis-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: #33383f;
+    }
+
+    .granger-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .irf-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      overflow: hidden;
+    }
+
+    .irf-card img {
+      width: 100%;
+      display: block;
+      filter: brightness(0.9) contrast(1.05);
+    }
+
+    .irf-caption {
+      padding: 1rem 1.25rem;
+      font-size: 0.76rem;
+      color: var(--muted);
+      line-height: 1.55;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── FEVD Section ───────────────────────────────────── */
+    .fevd-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.1rem;
+    }
+
+    .fevd-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      padding: 1.5rem;
+    }
+
+    .fevd-head {
+      margin-bottom: 1.2rem;
+    }
+
+    .fevd-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+
+    .fevd-subtitle {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .fevd-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .fevd-row {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .fevd-horizon {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      min-width: 2.8rem;
+    }
+
+    .fevd-track {
+      flex: 1;
+      height: 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .fevd-fill {
+      height: 100%;
+      border-radius: 4px;
+      width: 0;
+      transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fevd-pct {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      min-width: 2.8rem;
+      text-align: right;
+    }
+
+    .fevd-chart-wrap {
+      height: 240px;
+      margin-top: 2.5rem;
+    }
+
+    /* ── Conclusions ─────────────────────────────────────── */
+    .conclusions-layout {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 3.5rem;
+      align-items: start;
+    }
+
+    .finding-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .finding {
+      display: flex;
+      gap: 1.1rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .finding:last-child { border-bottom: none; }
+
+    .finding-index {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--blue);
+      min-width: 1.4rem;
+      padding-top: 0.22rem;
+      font-weight: 500;
+    }
+
+    .finding-body {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.72;
+    }
+
+    .finding-body strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .sidebar-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sidebar-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      padding: 1.5rem;
+    }
+
+    .sidebar-block-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .sidebar-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .sidebar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-row-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .sidebar-row-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .sidebar-row-val.amber { color: var(--amber); }
+
+    /* ── Method Chips ───────────────────────────────────── */
+    .method-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .chip {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.28rem 0.7rem;
+      border-radius: 1rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Footer ─────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .footer-author {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .footer-author strong { color: var(--text); font-weight: 600; }
+
+    .footer-right {
+      font-size: 0.72rem;
+      color: #2a2f38;
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── Reveal Anim ─────────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(22px); }
+
+    /* ── Responsive ─────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .granger-layout,
+      .conclusions-layout { grid-template-columns: 1fr; }
+      .fevd-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 8rem; gap: 3rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .stat-card.wide { grid-column: span 2; }
+      nav { padding: 0.9rem 1.5rem; }
+      .nav-links { display: none; }
+      .section { padding: 4rem 1.5rem; }
+      hr.rule { margin: 0 1.5rem; }
+      .fevd-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+    }
+
+    @media (max-width: 500px) {
+      .hero { padding: 7rem 1.5rem 2.5rem; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .stat-card.wide { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ─────────────────────────────────────────── -->
+<nav>
+  <span class="nav-brand">Petrodollar to Property</span>
+  <ul class="nav-links">
+    <li><a href="#data">Data</a></li>
+    <li><a href="#granger">Granger</a></li>
+    <li><a href="#fevd">FEVD</a></li>
+    <li><a href="#conclusions">Findings</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">
+      <span class="hero-tag-dot"></span>
+      Econometric Research &mdash; Dubai, 2026
+    </div>
+    <h1>
+      <span class="h1-dim">Petrodollar</span>
+      <span class="h1-bright">to Property</span>
+    </h1>
+    <p class="hero-desc">
+      Do Brent crude oil price shocks causally transmit into Dubai residential
+      property prices? Does the effect differ between apartments and luxury
+      villas? A Vector Autoregression across 149 months of data.
+    </p>
+    <div class="hero-meta">
+      <span class="meta-item">Jan 2012 &ndash; May 2024</span>
+      <span class="meta-sep"></span>
+      <span class="meta-item">DLD &times; FRED data</span>
+      <span class="meta-sep"></span>
+      <span class="meta-item">VAR &middot; Granger &middot; IRF &middot; FEVD</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="stats-grid">
+      <div class="stat-card wide">
+        <div class="stat-label">Study Window</div>
+        <div class="stat-value" style="font-size:1.5rem; letter-spacing:-0.02em;">Jan 2012 &rarr; May 2024</div>
+        <div class="stat-sub" id="counter-months">Loading&hellip;</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Strongest Signal</div>
+        <div class="stat-value c-amber" id="villa-p">0.084</div>
+        <div class="stat-sub">Villas, Granger p-value</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Max Oil Variance Share</div>
+        <div class="stat-value c-emerald">2.1%</div>
+        <div class="stat-sub">Villas at h&nbsp;=&nbsp;12 months</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Brent Peak</div>
+        <div class="stat-value c-blue">$125</div>
+        <div class="stat-sub">USD / barrel, Mar 2012</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Brent Trough</div>
+        <div class="stat-value c-muted">$18</div>
+        <div class="stat-sub">USD / barrel, Apr 2020</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="rule" />
+
+<!-- ── Data / Chart Section ───────────────────────────────── -->
+<section class="section" id="data">
+  <div class="section-eyebrow reveal">01 &mdash; The Data</div>
+  <h2 class="section-heading reveal">149 months of oil prices<br />and Dubai property.</h2>
+  <p class="section-desc reveal">
+    Brent crude (FRED, ICE benchmark) plotted against the Dubai Land Department
+    residential sale price index, split by all properties, apartments, and villas.
+    Toggle each series. Vertical markers flag three structural events.
+  </p>
+
+  <div class="chart-card reveal">
+    <div class="chart-controls">
+      <span class="ctrl-label">Series:</span>
+      <button class="toggle-btn btn-blue"    id="btn-brent"   onclick="toggleSeries(0)">
+        <span class="toggle-dot" style="background:var(--blue)"></span> Brent Crude
+      </button>
+      <button class="toggle-btn btn-rose"    id="btn-all"     onclick="toggleSeries(1)">
+        <span class="toggle-dot" style="background:var(--rose)"></span> All Properties
+      </button>
+      <button class="toggle-btn btn-emerald" id="btn-flat"    onclick="toggleSeries(2)">
+        <span class="toggle-dot" style="background:var(--emerald)"></span> Apartments
+      </button>
+      <button class="toggle-btn btn-amber"   id="btn-villa"   onclick="toggleSeries(3)">
+        <span class="toggle-dot" style="background:var(--amber)"></span> Villas
+      </button>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="mainChart"></canvas>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ── Granger Section ────────────────────────────────────── -->
+<section class="section" id="granger">
+  <div class="section-eyebrow reveal">02 &mdash; Granger Causality</div>
+  <h2 class="section-heading reveal">Oil does not significantly<br />predict Dubai prices.</h2>
+  <p class="section-desc reveal">
+    An F-test on each two-variable VAR tests whether past Brent values help
+    forecast Dubai prices beyond the price series itself. The null: Brent does
+    not Granger-cause Dubai prices. Nothing clears 5%. Villas reach p&nbsp;=&nbsp;0.084
+    at a 3-month lag &mdash; borderline at 10%, directionally sensible.
+  </p>
+
+  <div class="granger-layout">
+    <div>
+      <div class="pval-list">
+        <!-- All Properties -->
+        <div class="pval-item reveal">
+          <div class="pval-top">
+            <span class="pval-name">All Properties</span>
+            <div class="pval-right">
+              <span class="pval-num">p&nbsp;=&nbsp;0.218</span>
+              <span class="verdict v-fail">Not significant</span>
+            </div>
+          </div>
+          <div class="pval-track">
+            <div class="pval-fill c-rose" id="pf-all" style="background:var(--rose); opacity:0.55;"></div>
+            <div class="pval-threshold-line"></div>
+          </div>
+          <div class="pval-axis">
+            <span class="pval-axis-label">p = 0</span>
+            <span class="pval-axis-label">p = 0.30</span>
+          </div>
+        </div>
+
+        <!-- Apartments -->
+        <div class="pval-item reveal">
+          <div class="pval-top">
+            <span class="pval-name">Apartments</span>
+            <div class="pval-right">
+              <span class="pval-num">p&nbsp;=&nbsp;0.294</span>
+              <span class="verdict v-fail">Not significant</span>
+            </div>
+          </div>
+          <div class="pval-track">
+            <div class="pval-fill" id="pf-flat" style="background:var(--emerald); opacity:0.5;"></div>
+            <div class="pval-threshold-line"></div>
+          </div>
+          <div class="pval-axis">
+            <span class="pval-axis-label">p = 0</span>
+            <span class="pval-axis-label">p = 0.30</span>
+          </div>
+        </div>
+
+        <!-- Villas -->
+        <div class="pval-item reveal">
+          <div class="pval-top">
+            <span class="pval-name">Villas</span>
+            <div class="pval-right">
+              <span class="pval-num">p&nbsp;=&nbsp;0.084</span>
+              <span class="verdict v-border">Borderline 10%</span>
+            </div>
+          </div>
+          <div class="pval-track">
+            <div class="pval-fill" id="pf-villa" style="background:var(--amber);"></div>
+            <div class="pval-threshold-line"></div>
+          </div>
+          <div class="pval-axis">
+            <span class="pval-axis-label">p = 0</span>
+            <span class="pval-axis-label">p = 0.30</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="granger-note reveal">
+        The villa result makes intuitive sense. GCC nationals &mdash; whose wealth
+        tracks oil &mdash; concentrate buying in the luxury villa segment.
+        A 3-month lag appearing there is coherent. It still does not cross
+        the conventional threshold. The 2022&ndash;2024 price surge, driven by
+        migration and the Golden Visa expansion rather than oil, likely pulls
+        all estimated oil coefficients toward zero.
+      </div>
+    </div>
+
+    <div>
+      <div class="irf-card reveal">
+        <img src="outputs/figures/main_result.png"
+             alt="Impulse Response Functions: All Properties, Apartments, Villas responding to a Brent oil shock"
+             onerror="this.parentElement.style.display='none'" />
+        <div class="irf-caption">
+          <strong>Impulse Response Functions &mdash; 12-month horizon, 95% confidence band.</strong><br />
+          Each panel shows the estimated response of a Dubai price segment to a one-unit Brent oil shock.
+          All confidence bands contain zero throughout, consistent with the Granger non-rejection.
+          VAR lag lengths: All = 2, Apartments = 2, Villas = 3.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ── FEVD Section ───────────────────────────────────────── -->
+<section class="section" id="fevd">
+  <div class="section-eyebrow reveal">03 &mdash; Variance Decomposition</div>
+  <h2 class="section-heading reveal">Oil explains at most 2.1%<br />of villa price variance.</h2>
+  <p class="section-desc reveal">
+    The Forecast Error Variance Decomposition (FEVD) shows how much of future
+    price forecast error comes from oil shocks versus each segment's own past
+    values. Even in the segment most responsive to oil (villas), the share
+    is capped at 2.1% at a 12-month horizon.
+  </p>
+
+  <div class="fevd-grid">
+    <!-- All Properties -->
+    <div class="fevd-card reveal">
+      <div class="fevd-head">
+        <div class="fevd-title c-rose">All Properties</div>
+        <div class="fevd-subtitle">VAR lag = 2, Granger p = 0.218</div>
+      </div>
+      <div class="fevd-rows">
+        <div class="fevd-row">
+          <span class="fevd-horizon">h = 1</span>
+          <div class="fevd-track">
+            <div class="fevd-fill" id="fa-1" style="background:var(--rose); opacity:0.7;"></div>
+          </div>
+          <span class="fevd-pct">0.2%</span>
+        </div>
+        <div class="fevd-row">
+          <span class="fevd-horizon">h = 3</span>
+          <div class="fevd-track">
+            <div class="fevd-fill" id="fa-3" style="background:var(--rose); opacity:0.7;"></div>
+          </div>
+          <span class="fevd-pct">0.8%</span>
+        </div>
+        <div class="fevd-row">
+          <span class="fevd-horizon">h = 6</span>
+          <div class="fevd-track">
+            <div class="fevd-fill" id="fa-6" style="background:var(--rose); opacity:0.7;"></div>
+          </div>
+          <span class="fevd-pct">1.0%</span>
+        </div>
+        <div class="fevd-row">
+          <span class="fevd-horizon">h = 12</span>
+          <div class="fevd-track">
+            <div class="fevd-fill" id="fa-12" style="background:var(--rose); opacity:0.7;"></div>
+          </div>
+          <span class="fevd-pct c-rose" style="color:var(--rose); font-weight:500;">1.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apartments -->
+    <div class="fevd-card reveal">
+      <div class="fevd-head">
+        <div class="fevd-title c-emerald">Apartments</div>
+        <div class="fevd-subtitle">VAR lag = 2, Granger p = 0.294</div>
+      </div>
+      <div class="fevd-rows">
+        <div class="fevd-row">
+          <span class="fevd-horizon">h = 1</span>
+          <div class="fevd-track">
+            <div class="fevd-fill" id="ff-1" style="background:var(--emerald); opacity:0.7;"></div>
+          </div>
+          <span class="fevd-pct">0.0%</span>
+        </div>
+        <div class="fevd-row">
+          <span class="fevd-horizon">h = 3</span>
+          <div class="fevd-track">
+            <div class="fevd-fill" id="ff-3" style="background:var(--emerald); opacity:0.7;"></div>
+          </div>
+          <span class="fevd-pct">0.5%</span>
+        </div>
+        <div class="fevd-row">
+          <span class="fevd-horizon">h = 6</span>
+          <div class="fevd-track">
+            <div class="fevd-fill" id="ff-6" style="background:var(--emerald); opacity:0.7;"></div>
+          </div>
+          <span class="fevd-pct">0.7%</span>
+        </div>
+        <div class="fevd-row">
+          <span class="fevd-horizon">h = 12</span>
+          <div class="fevd-track">
+            <div class="fevd-fill" id="ff-12" style="background:var(--emerald); opacity:0.7;"></div>
+          </div>
+          <span class="fevd-pct c-emerald" style="color:var(--emerald); font-weight:500;">0.7%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Villas -->
+    <div class="fevd-card reveal">
+      <div class="fevd-head">
+        <div class="fevd-title c-amber">Villas</div>
+        <div class="fevd-subtitle">VAR lag = 3, Granger p = 0.084</div>
+      </div>
+      <div class="fevd-rows">
+        <div class="fevd-row">
+          <span class="fevd-horizon">h = 1</span>
+          <div class="fevd-track">
+            <div class="fevd-fill" id="fv-1" style="background:var(--amber); opacity:0.8;"></div>
+          </div>
+          <span class="fevd-pct">0.2%</span>
+        </div>
+        <div class="fevd-row">
+          <span class="fevd-horizon">h = 3</span>
+          <div class="fevd-track">
+            <div class="fevd-fill" id="fv-3" style="background:var(--amber); opacity:0.8;"></div>
+          </div>
+          <span class="fevd-pct">2.0%</span>
+        </div>
+        <div class="fevd-row">
+          <span class="fevd-horizon">h = 6</span>
+          <div class="fevd-track">
+            <div class="fevd-fill" id="fv-6" style="background:var(--amber); opacity:0.8;"></div>
+          </div>
+          <span class="fevd-pct">2.2%</span>
+        </div>
+        <div class="fevd-row">
+          <span class="fevd-horizon">h = 12</span>
+          <div class="fevd-track">
+            <div class="fevd-fill" id="fv-12" style="background:var(--amber); opacity:0.8;"></div>
+          </div>
+          <span class="fevd-pct c-amber" style="color:var(--amber); font-weight:500;">2.1%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fevd-chart-wrap reveal">
+    <canvas id="fevdChart"></canvas>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ── Conclusions ────────────────────────────────────────── -->
+<section class="section" id="conclusions">
+  <div class="section-eyebrow reveal">04 &mdash; What This Tells Us</div>
+  <h2 class="section-heading reveal">Dubai property does not<br />run on oil money.</h2>
+  <p class="section-desc reveal">
+    The results challenge a common assumption. Over this 12-year window, Brent
+    crude price swings did not significantly predict where Dubai residential
+    prices moved.
+  </p>
+
+  <div class="conclusions-layout">
+    <div>
+      <div class="finding-list">
+        <div class="finding reveal">
+          <span class="finding-index">01</span>
+          <div class="finding-body">
+            <strong>No significant Granger causality in any segment.</strong>
+            All p-values sit above the 5% threshold. Dubai property prices are not
+            significantly predictable from past oil prices in any of the three
+            residential segments over this study window.
+          </div>
+        </div>
+
+        <div class="finding reveal">
+          <span class="finding-index">02</span>
+          <div class="finding-body">
+            <strong>Dubai's GDP does not depend on oil.</strong>
+            The city's economy runs on trade, logistics, tourism, and finance.
+            That is Abu Dhabi. Brent price swings have no direct channel into
+            Dubai's fiscal position or public employment in the way they would
+            in an oil-budget city.
+          </div>
+        </div>
+
+        <div class="finding reveal">
+          <span class="finding-index">03</span>
+          <div class="finding-body">
+            <strong>The 2022&ndash;2024 boom was not an oil story.</strong>
+            The largest price run in DLD history came from post-Ukraine migration,
+            Golden Visa expansion, and an influx of buyers from Russia, Europe, and
+            South Asia. None of that correlates with Brent crude.
+          </div>
+        </div>
+
+        <div class="finding reveal">
+          <span class="finding-index">04</span>
+          <div class="finding-body">
+            <strong>Villas are the most interesting result.</strong>
+            p&nbsp;=&nbsp;0.084 at a 3-month lag is not significant by conventional
+            standards, but it is not noise. If oil has any path into Dubai property,
+            it is through GCC nationals &mdash; whose wealth tracks oil &mdash;
+            buying in the luxury villa segment. FEVD caps that effect at 2.1%.
+          </div>
+        </div>
+
+        <div class="finding reveal">
+          <span class="finding-index">05</span>
+          <div class="finding-body">
+            <strong>The 2022&ndash;2024 structural break reduces ADF power.</strong>
+            The Dubai price surge was so sharp and non-oil-driven that ADF tests
+            become inconclusive on first differences. KPSS tests confirm
+            log-differences are stationary. Both tests together justify the
+            transformation used in the VAR.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-stack">
+      <div class="sidebar-block reveal">
+        <div class="sidebar-block-title">Granger Results</div>
+        <div class="sidebar-rows">
+          <div class="sidebar-row">
+            <span class="sidebar-row-label">All Properties</span>
+            <span class="sidebar-row-val">p = 0.218</span>
+          </div>
+          <div class="sidebar-row">
+            <span class="sidebar-row-label">Apartments</span>
+            <span class="sidebar-row-val">p = 0.294</span>
+          </div>
+          <div class="sidebar-row">
+            <span class="sidebar-row-label">Villas</span>
+            <span class="sidebar-row-val amber">p = 0.084</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-block reveal">
+        <div class="sidebar-block-title">FEVD at h = 12</div>
+        <div class="sidebar-rows">
+          <div class="sidebar-row">
+            <span class="sidebar-row-label">All Properties</span>
+            <span class="sidebar-row-val">1.0%</span>
+          </div>
+          <div class="sidebar-row">
+            <span class="sidebar-row-label">Apartments</span>
+            <span class="sidebar-row-val">0.7%</span>
+          </div>
+          <div class="sidebar-row">
+            <span class="sidebar-row-label">Villas</span>
+            <span class="sidebar-row-val amber">2.1%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-block reveal">
+        <div class="sidebar-block-title">Methodology</div>
+        <div class="method-chips">
+          <span class="chip">VAR(p)</span>
+          <span class="chip">AIC lag selection</span>
+          <span class="chip">Granger F-test</span>
+          <span class="chip">IRF 12-month</span>
+          <span class="chip">FEVD</span>
+          <span class="chip">ADF + KPSS</span>
+          <span class="chip">Log first-diff</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-author">
+    <strong>Ali Ballan</strong><br />
+    Grade 10 &mdash; Dubai American Academy, Dubai<br />
+    Research conducted independently, May 2026
+  </div>
+  <div class="footer-right">
+    DLD via Dubai Pulse &middot; FRED MCOILBRENTEU<br />
+    statsmodels VAR &middot; 149 observations
+  </div>
+</footer>
+
+
+<!-- ── Scripts ────────────────────────────────────────────── -->
+<script>
+/* ── Data ─────────────────────────────────────────────────── */
+const DATES = ["2012-01","2012-02","2012-03","2012-04","2012-05","2012-06","2012-07","2012-08","2012-09","2012-10","2012-11","2012-12","2013-01","2013-02","2013-03","2013-04","2013-05","2013-06","2013-07","2013-08","2013-09","2013-10","2013-11","2013-12","2014-01","2014-02","2014-03","2014-04","2014-05","2014-06","2014-07","2014-08","2014-09","2014-10","2014-11","2014-12","2015-01","2015-02","2015-03","2015-04","2015-05","2015-06","2015-07","2015-08","2015-09","2015-10","2015-11","2015-12","2016-01","2016-02","2016-03","2016-04","2016-05","2016-06","2016-07","2016-08","2016-09","2016-10","2016-11","2016-12","2017-01","2017-02","2017-03","2017-04","2017-05","2017-06","2017-07","2017-08","2017-09","2017-10","2017-11","2017-12","2018-01","2018-02","2018-03","2018-04","2018-05","2018-06","2018-07","2018-08","2018-09","2018-10","2018-11","2018-12","2019-01","2019-02","2019-03","2019-04","2019-05","2019-06","2019-07","2019-08","2019-09","2019-10","2019-11","2019-12","2020-01","2020-02","2020-03","2020-04","2020-05","2020-06","2020-07","2020-08","2020-09","2020-10","2020-11","2020-12","2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10","2021-11","2021-12","2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11","2023-12","2024-01","2024-02","2024-03","2024-04","2024-05"];
+const BRENT = [110.69,119.33,125.45,119.75,110.34,95.16,102.62,113.36,112.86,111.71,109.06,109.49,112.96,116.05,108.47,102.25,102.56,102.92,107.93,111.28,111.6,109.08,107.79,110.76,108.12,108.9,107.48,107.76,109.54,111.8,106.77,101.61,97.09,87.43,79.44,62.34,47.76,58.1,55.89,59.52,64.08,61.48,56.56,46.52,47.62,48.43,44.27,38.01,30.7,32.18,38.21,41.58,46.74,48.25,44.95,45.84,46.57,49.52,44.73,53.31,54.58,54.87,51.59,52.31,50.33,46.37,48.48,51.7,56.15,57.51,62.71,64.37,69.08,65.32,66.02,72.11,76.98,74.41,74.25,72.53,78.89,81.03,64.75,57.36,59.41,63.96,66.14,71.23,71.32,64.22,63.92,59.04,62.83,59.71,63.21,67.31,63.65,55.66,32.01,18.38,29.38,40.27,43.24,44.74,40.91,40.19,42.69,49.99,54.77,62.28,65.41,64.81,68.53,73.16,75.17,70.75,74.49,83.54,81.05,74.17,86.51,97.13,117.25,104.58,113.34,122.71,111.93,100.45,89.76,93.33,91.42,80.92,82.5,82.59,78.43,84.64,75.47,74.84,80.11,86.15,93.72,90.6,82.94,77.63,80.12,83.48,85.41,89.94,81.75];
+const ALL   = [100.0,99.4,99.0,98.7,98.7,99.0,99.3,98.5,98.8,99.6,100.1,100.5,101.5,102.7,103.5,104.5,105.4,106.6,107.4,108.8,109.1,110.0,111.5,111.6,112.7,114.0,115.7,117.5,119.0,121.3,122.7,123.7,125.4,126.2,127.2,128.7,129.4,129.7,129.8,130.1,130.6,129.7,128.6,128.1,127.9,127.3,126.5,125.7,124.8,123.9,123.4,122.4,121.9,122.0,124.3,125.2,124.7,125.5,125.3,126.6,127.6,128.5,129.0,129.4,129.3,128.8,127.6,127.2,127.7,127.2,127.5,126.8,126.7,126.1,125.7,125.8,125.5,125.4,125.1,124.3,123.2,122.4,121.5,120.9,119.5,118.4,117.0,115.3,114.2,113.8,112.7,112.3,112.4,111.9,112.2,111.4,111.2,110.4,110.0,111.5,112.1,111.3,110.8,110.5,109.5,109.2,107.6,107.5,108.1,108.3,108.5,107.2,107.1,107.0,108.3,109.6,111.5,113.2,115.6,117.9,119.7,122.2,124.9,127.3,129.6,132.3,133.8,134.8,135.8,137.1,138.7,139.6,140.5,141.5,142.1,143.0,144.2,146.6,148.6,150.4,152.6,154.4,155.4,157.7,159.2,161.1,163.3,164.5,165.6];
+const FLAT  = [100.0,99.3,99.1,98.7,98.6,98.8,99.2,98.4,98.8,99.7,100.1,100.4,101.5,102.8,103.8,105.0,106.0,107.3,108.0,109.7,110.2,111.3,113.5,114.7,116.2,117.5,119.4,121.0,122.7,125.0,126.6,127.8,130.4,131.5,132.3,133.5,134.2,134.5,134.5,134.6,134.9,134.0,133.3,132.9,131.9,130.9,130.1,128.8,127.9,126.8,126.3,125.6,125.2,125.3,127.2,127.6,127.1,127.9,127.7,129.1,130.3,132.0,132.7,133.2,133.3,133.0,131.9,131.7,132.3,132.2,132.3,131.6,131.2,130.3,129.8,129.8,129.4,129.2,129.0,128.3,127.1,126.1,125.3,124.6,123.4,122.2,121.0,119.4,118.4,118.1,117.3,116.9,117.3,117.2,117.9,117.5,117.4,116.7,116.2,118.2,118.9,117.9,117.1,116.8,115.3,114.3,112.5,112.4,112.7,112.5,112.9,109.7,108.5,108.8,110.1,111.6,114.0,116.0,118.2,120.7,122.8,125.9,128.5,133.1,136.8,139.3,141.4,142.8,144.2,145.9,148.2,149.5,151.4,152.8,153.9,154.8,156.0,159.1,161.2,164.1,166.5,168.6,169.3,171.7,173.0,176.0,179.0,180.5,182.6];
+const VILLA = [100.0,101.4,101.4,103.1,104.0,104.9,105.8,106.5,106.4,105.8,106.4,106.6,107.7,108.6,109.7,109.3,110.5,111.8,112.5,114.1,117.2,119.5,120.3,121.7,121.7,122.3,123.2,125.8,127.4,129.0,130.5,131.3,132.8,135.5,136.2,137.0,139.3,138.6,138.0,137.7,137.1,135.8,135.0,133.0,129.5,128.8,127.9,125.6,123.0,124.9,126.8,127.5,127.5,128.6,130.4,134.4,138.3,138.1,139.3,141.3,143.4,142.9,142.4,141.1,141.4,140.9,140.6,139.6,137.7,135.7,135.2,134.2,132.7,131.6,130.8,131.2,131.7,132.4,130.3,127.7,126.2,125.4,123.9,122.2,120.6,119.6,117.2,114.8,111.5,109.4,108.9,108.4,107.7,106.6,105.7,105.9,105.1,104.3,104.7,105.0,106.0,104.0,102.3,101.2,99.8,99.1,99.7,100.0,96.8,97.0,98.2,99.2,99.3,101.3,103.9,107.2,109.8,113.0,116.7,119.3,126.2,128.4,129.7,131.8,133.8,134.7,134.9,134.3,135.3,135.5,134.3,134.0,133.2,135.8,136.6,137.4,139.4,141.3,145.7,150.8,153.9,155.9,159.2,161.7,165.2,165.8,170.1,169.9,170.5];
+
+/* ── Events (index positions in DATES array) ─────────────── */
+// 2014-11 = index 34, 2020-04 = index 99, 2022-03 = index 122
+const EVENTS = [
+  { idx: 34,  label: 'Oil Crash\nNov 2014'    },
+  { idx: 99,  label: 'COVID-19\nApr 2020'     },
+  { idx: 122, label: 'Ukraine\nMar 2022'      },
+];
+
+/* ── Hero counter ────────────────────────────────────────── */
+(function animateCounter() {
+  const el = document.getElementById('counter-months');
+  let start = 0, end = 149, dur = 1800;
+  const step = (ts) => {
+    if (!start) start = ts;
+    const pct = Math.min((ts - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - pct, 3);
+    el.textContent = Math.round(ease * end) + ' monthly observations';
+    if (pct < 1) requestAnimationFrame(step);
+  };
+  setTimeout(() => requestAnimationFrame(step), 600);
+})();
+
+/* ── Main Chart ──────────────────────────────────────────── */
+const annotationsCfg = {};
+const annColors = ['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.2)', 'rgba(255,255,255,0.2)'];
+EVENTS.forEach((ev, i) => {
+  annotationsCfg[`ev${i}`] = {
+    type: 'line',
+    scaleID: 'x',
+    value: ev.idx,
+    borderColor: annColors[i],
+    borderWidth: 1.2,
+    borderDash: [4, 4],
+    label: {
+      display: true,
+      content: ev.label.split('\n'),
+      color: 'rgba(255,255,255,0.35)',
+      backgroundColor: 'transparent',
+      font: { size: 9, family: "'JetBrains Mono', monospace", weight: '400' },
+      position: 'start',
+      yAdjust: 8,
+    },
+  };
+});
+
+const ctx = document.getElementById('mainChart').getContext('2d');
+const mainChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: DATES,
+    datasets: [
+      {
+        label: 'Brent Crude (USD/bbl)',
+        data: BRENT,
+        yAxisID: 'yBrent',
+        borderColor: '#4a8fd4',
+        backgroundColor: 'rgba(74,143,212,0.06)',
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        tension: 0.25,
+        fill: false,
+      },
+      {
+        label: 'All Properties Index',
+        data: ALL,
+        yAxisID: 'yDubai',
+        borderColor: '#e05470',
+        borderWidth: 1.8,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        tension: 0.25,
+        fill: false,
+      },
+      {
+        label: 'Apartments Index',
+        data: FLAT,
+        yAxisID: 'yDubai',
+        borderColor: '#30b87e',
+        borderWidth: 1.8,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        tension: 0.25,
+        fill: false,
+        borderDash: [5, 2],
+      },
+      {
+        label: 'Villas Index',
+        data: VILLA,
+        yAxisID: 'yDubai',
+        borderColor: '#e8a840',
+        borderWidth: 1.8,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        tension: 0.25,
+        fill: false,
+        borderDash: [2, 2],
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      annotation: { annotations: annotationsCfg },
+      tooltip: {
+        backgroundColor: 'rgba(10,10,20,0.92)',
+        borderColor: 'rgba(255,255,255,0.08)',
+        borderWidth: 1,
+        padding: 12,
+        titleColor: '#888',
+        bodyColor: '#dde1ec',
+        titleFont: { size: 11, family: "'JetBrains Mono', monospace" },
+        bodyFont: { size: 12, family: "'Outfit', sans-serif" },
+        callbacks: {
+          title: items => items[0].label,
+          label: item => {
+            const ds = item.dataset.label;
+            const v = item.parsed.y;
+            if (ds.startsWith('Brent')) return `  Brent: $${v.toFixed(1)} / bbl`;
+            return `  ${ds}: ${v.toFixed(1)}`;
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: '#57606e',
+          font: { size: 10, family: "'JetBrains Mono', monospace" },
+          maxTicksLimit: 13,
+          callback: (val, idx) => {
+            const d = DATES[idx];
+            return d && d.endsWith('-01') ? d.slice(0,4) : '';
+          },
+        },
+        grid: { color: 'rgba(255,255,255,0.03)' },
+        border: { color: 'rgba(255,255,255,0.07)' },
+      },
+      yBrent: {
+        type: 'linear',
+        position: 'left',
+        ticks: {
+          color: '#4a8fd4',
+          font: { size: 10, family: "'JetBrains Mono', monospace" },
+          callback: v => `$${v}`,
+        },
+        grid: { color: 'rgba(255,255,255,0.03)' },
+        border: { color: 'rgba(74,143,212,0.25)' },
+        title: {
+          display: true,
+          text: 'Brent Crude (USD / bbl)',
+          color: 'rgba(74,143,212,0.55)',
+          font: { size: 10, family: "'Outfit', sans-serif" },
+        },
+      },
+      yDubai: {
+        type: 'linear',
+        position: 'right',
+        ticks: {
+          color: '#57606e',
+          font: { size: 10, family: "'JetBrains Mono', monospace" },
+          callback: v => v,
+        },
+        grid: { drawOnChartArea: false },
+        border: { color: 'rgba(255,255,255,0.07)' },
+        title: {
+          display: true,
+          text: 'DLD Price Index (base Jan 2012 = 100)',
+          color: 'rgba(255,255,255,0.25)',
+          font: { size: 10, family: "'Outfit', sans-serif" },
+        },
+      },
+    },
+  },
+});
+
+/* ── Toggle Chart Series ─────────────────────────────────── */
+const btns = ['btn-brent', 'btn-all', 'btn-flat', 'btn-villa'];
+const btnClasses = ['btn-blue', 'btn-rose', 'btn-emerald', 'btn-amber'];
+function toggleSeries(idx) {
+  const ds = mainChart.data.datasets[idx];
+  ds.hidden = !ds.hidden;
+  mainChart.update();
+  const btn = document.getElementById(btns[idx]);
+  btn.classList.toggle('off', ds.hidden);
+}
+
+/* ── FEVD Comparison Chart ───────────────────────────────── */
+const fevdCtx = document.getElementById('fevdChart').getContext('2d');
+new Chart(fevdCtx, {
+  type: 'bar',
+  data: {
+    labels: ['h = 1', 'h = 3', 'h = 6', 'h = 12'],
+    datasets: [
+      {
+        label: 'All Properties',
+        data: [0.2, 0.8, 1.0, 1.0],
+        backgroundColor: 'rgba(224,84,112,0.65)',
+        borderColor: '#e05470',
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+      {
+        label: 'Apartments',
+        data: [0.0, 0.5, 0.7, 0.7],
+        backgroundColor: 'rgba(48,184,126,0.65)',
+        borderColor: '#30b87e',
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+      {
+        label: 'Villas',
+        data: [0.2, 2.0, 2.2, 2.1],
+        backgroundColor: 'rgba(232,168,64,0.75)',
+        borderColor: '#e8a840',
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: {
+          color: '#57606e',
+          font: { size: 11, family: "'Outfit', sans-serif" },
+          boxWidth: 10,
+          boxHeight: 10,
+          borderRadius: 3,
+          useBorderRadius: true,
+          padding: 20,
+        },
+      },
+      tooltip: {
+        backgroundColor: 'rgba(10,10,20,0.92)',
+        borderColor: 'rgba(255,255,255,0.08)',
+        borderWidth: 1,
+        padding: 12,
+        bodyColor: '#dde1ec',
+        bodyFont: { size: 12, family: "'Outfit', sans-serif" },
+        callbacks: {
+          label: item => `  ${item.dataset.label}: ${item.parsed.y.toFixed(1)}%`,
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: { color: '#57606e', font: { size: 11, family: "'Outfit', sans-serif" } },
+        grid: { color: 'rgba(255,255,255,0.03)' },
+        border: { color: 'rgba(255,255,255,0.07)' },
+      },
+      y: {
+        ticks: {
+          color: '#57606e',
+          font: { size: 10, family: "'JetBrains Mono', monospace" },
+          callback: v => v + '%',
+        },
+        grid: { color: 'rgba(255,255,255,0.03)' },
+        border: { color: 'rgba(255,255,255,0.07)' },
+        title: {
+          display: true,
+          text: '% of Forecast Error Variance Explained by Oil Shock',
+          color: 'rgba(255,255,255,0.2)',
+          font: { size: 10, family: "'Outfit', sans-serif" },
+        },
+      },
+    },
+  },
+});
+
+/* ── GSAP + ScrollTrigger ────────────────────────────────── */
+gsap.registerPlugin(ScrollTrigger);
+
+// Batch reveal all .reveal elements
+gsap.utils.toArray('.reveal').forEach(el => {
+  gsap.to(el, {
+    opacity: 1,
+    y: 0,
+    duration: 0.75,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: el,
+      start: 'top 88%',
+      toggleActions: 'play none none none',
+    },
+  });
+});
+
+/* ── Animate P-value bars on scroll ─────────────────────── */
+// Scale: 0.30 = 100%, so p*100/0.30 = pct
+const pvals = [
+  { id: 'pf-all',   p: 0.218 },
+  { id: 'pf-flat',  p: 0.294 },
+  { id: 'pf-villa', p: 0.084 },
+];
+pvals.forEach(({ id, p }) => {
+  const el = document.getElementById(id);
+  const pct = (p / 0.30) * 100;
+  ScrollTrigger.create({
+    trigger: el,
+    start: 'top 90%',
+    onEnter: () => { el.style.width = pct + '%'; },
+    once: true,
+  });
+});
+
+/* ── Animate FEVD bars on scroll ─────────────────────────── */
+// Scale: 3.0% = 100%
+const fevdBars = [
+  { id: 'fa-1',  v: 0.2 }, { id: 'fa-3',  v: 0.8 }, { id: 'fa-6', v: 1.0 }, { id: 'fa-12', v: 1.0 },
+  { id: 'ff-1',  v: 0.0 }, { id: 'ff-3',  v: 0.5 }, { id: 'ff-6', v: 0.7 }, { id: 'ff-12', v: 0.7 },
+  { id: 'fv-1',  v: 0.2 }, { id: 'fv-3',  v: 2.0 }, { id: 'fv-6', v: 2.2 }, { id: 'fv-12', v: 2.1 },
+];
+fevdBars.forEach(({ id, v }) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const pct = (v / 2.5) * 100;
+  ScrollTrigger.create({
+    trigger: el,
+    start: 'top 90%',
+    onEnter: () => {
+      setTimeout(() => { el.style.width = pct + '%'; }, 80);
+    },
+    once: true,
+  });
+});
+</script>
+
+</body>
+</html>
